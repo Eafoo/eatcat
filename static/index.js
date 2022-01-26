@@ -490,6 +490,14 @@ function initSetting(flag) {
         __Time = parseInt(cookie("limit"));
         GameTimeLayer.innerHTML = creatTimeText(__Time);
     }
+    if (cookie("note")) {
+
+        let str = cookie("note");
+        document.getElementById("note").value = str;
+        key = str.split('');
+        len = key.length;
+        gameRestart();
+    }
 }
 
 function show_btn() {
@@ -518,6 +526,7 @@ function show_setting() {
 function save_cookie() {
     let str = document.getElementById("keyboard").value;
     let Time = document.getElementById("timeinput").value;
+    let note = document.getElementById("note").value;
     map = {};
     map[str.charAt(0).toLowerCase()] = 1;
     map[str.charAt(1).toLowerCase()] = 2;
@@ -525,10 +534,11 @@ function save_cookie() {
     map[str.charAt(3).toLowerCase()] = 4;
     __Time = parseInt(Time);
     GameTimeLayer.innerHTML = creatTimeText(__Time);
-    key = document.getElementById("note").value.split('');
+    key = note.split('');
     len = key.length;
     cookie('keyboard', str, 100);
     cookie('limit', Time, 100);
+    cookie('note', note, 100);
     initSetting(0);
     gameRestart();
 }
@@ -599,6 +609,6 @@ function GetCookie(name) {
 function autoset(asss) {
     key = asss.split('');
     len = key.length;
-    cookie('note', note, 100);
+    cookie('note', asss, 100);
     gameRestart();
 }
