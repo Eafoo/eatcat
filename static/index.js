@@ -492,7 +492,7 @@ function initSetting(flag) {
     }
     if (cookie("note")) {
 
-        let str = cookie("note");
+        let str = cookie("note").toString();
         document.getElementById("note").value = str;
         key = str.split('');
         len = key.length;
