@@ -497,12 +497,14 @@ function initSetting(flag) {
 }
 
 function show_btn() {
-    document.getElementById("btn_group").style.display = "block"
-    document.getElementById("setting").style.display = "none"
+    document.getElementById("tt").style.display = "block";
+    document.getElementById("ttt").style.display = "block";
+    document.getElementById("btn_group").style.display = "block";
+    document.getElementById("btn_group2").style.display = "block";
+    document.getElementById("setting").style.display = "none";
 }
 
 function show_setting() {
-    document.getElementById("btn_group").style.display = "none"
     var str = ['d', 'f', 'j', 'k'];
     for (var ke in map) {
         str[map[ke] - 1] = ke.charAt(0);
@@ -510,7 +512,11 @@ function show_setting() {
     document.getElementById("keyboard").value = str.join('');
     document.getElementById("timeinput").value = __Time.toString();
     document.getElementById("note").value = key.join('');
-    document.getElementById("setting").style.display = "block"
+    document.getElementById("btn_group").style.display = "none";
+    document.getElementById("btn_group2").style.display = "none";
+    document.getElementById("tt").style.display = "none";
+    document.getElementById("ttt").style.display = "none";
+    document.getElementById("setting").style.display = "block";
 }
 
 function save_cookie() {
@@ -526,11 +532,11 @@ function save_cookie() {
     GameTimeLayer.innerHTML = creatTimeText(__Time);
     key = note.split('');
     len = key.length;
-    gameRestart();
     cookie('keyboard', str, 100);
     cookie('limit', Time, 100);
     cookie('note', note, 100);
     initSetting(0);
+    gameRestart();
 }
 
 function isnull(val) {
@@ -556,4 +562,11 @@ function click(index) {
     };
 
     gameTapEvent(fakeEvent)
+}
+
+function autoset(asss) {
+    key = asss.split('');
+    len = key.length;
+    cookie('note', note, 100);
+    gameRestart();
 }
