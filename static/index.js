@@ -129,7 +129,11 @@ function gameInit() {
     gameRestart();
 }
 
+let last = 0, lkey = 0;
+
 function gameRestart() {
+    last = 0;
+    lkey = 0;
     _gameBBList = [];
     _gameBBListIndex = 0;
     _gameScore = 0;
@@ -176,8 +180,6 @@ function creatTimeText(n) {
 
 let _ttreg = / t{1,2}(\d+)/,
     _clearttClsReg = / t{1,2}\d+| bad/;
-
-let last = 0, lkey = 0;
 
 function refreshGameLayer(box, loop, offset) {
     let i = 0;
