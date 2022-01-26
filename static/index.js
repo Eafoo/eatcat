@@ -490,12 +490,6 @@ function initSetting(flag) {
         __Time = parseInt(cookie("limit"));
         GameTimeLayer.innerHTML = creatTimeText(__Time);
     }
-    if (cookie("note")) {
-        document.getElementById("note").value = cookie("note");
-        key = cookie("note").split('');
-        len = key.length;
-        gameRestart();
-    }
 }
 
 function show_btn() {
@@ -524,7 +518,6 @@ function show_setting() {
 function save_cookie() {
     let str = document.getElementById("keyboard").value;
     let Time = document.getElementById("timeinput").value;
-    let note = document.getElementById("note").value;
     map = {};
     map[str.charAt(0).toLowerCase()] = 1;
     map[str.charAt(1).toLowerCase()] = 2;
@@ -536,7 +529,6 @@ function save_cookie() {
     len = key.length;
     cookie('keyboard', str, 100);
     cookie('limit', Time, 100);
-    cookie('note', note, 100);
     initSetting(0);
     gameRestart();
 }
