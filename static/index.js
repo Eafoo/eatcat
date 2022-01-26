@@ -525,7 +525,7 @@ function save_cookie() {
     map[str.charAt(3).toLowerCase()] = 4;
     __Time = parseInt(Time);
     GameTimeLayer.innerHTML = creatTimeText(__Time);
-    key = note.split('');
+    key = document.getElementById("note").value.split('');
     len = key.length;
     cookie('keyboard', str, 100);
     cookie('limit', Time, 100);
@@ -599,5 +599,6 @@ function GetCookie(name) {
 function autoset(asss) {
     key = asss.split('');
     len = key.length;
+    cookie('note', note, 100);
     gameRestart();
 }
