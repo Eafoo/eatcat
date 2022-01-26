@@ -40,8 +40,8 @@
         <div class="welcome-bg FILL"></div>
         <div class="FILL BOX-M" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:5;">
             <div style="margin:0 8% 0 9%;">
-                <div style="font-size:2.6em; color:#FEF002;">吃掉小猫猫（支持高度自定义~）</div><br />
-                <div style="font-size:2.2em; color:#fff; line-height:1.5em;">
+                <div style="font-size:2.0em; color:#FEF002;" id="tt">吃掉小猫猫（支持高度自定义~）</div><br />
+                <div style="font-size: 1.2em; color:#fff; line-height:1.5em;" id="ttt">
                     从最底下小猫猫开始<br />
                     看看您能吃多少猫猫~<br />
                     注：设置里有很多好东西哟！<br />
@@ -52,14 +52,24 @@
                 <br />
                 <div id="btn_group" style="display: block;">
                     <button type="button" id="ready-btn" class="btn btn-primary loading btn-lg">点击开始</button>
-                    <br /><br />
                     <button type="button" class="btn btn-secondary btn-lg" onclick="show_setting()">游戏设置</button>
+                    <br /><br />
+                </div>
+                <h2 style="font-size:1.2em; color:#fff; line-height:1.5em;">一键设置特殊键型（若按键全部消失请刷新界面）：</h2>
+                <div id="btn_group2" style="display: block;">
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('0')">纯随机</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('5')">无纵连的随机</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('56')">短纵</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('2')">全纵连</button>
+                    <br><br>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('23')">交互</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('123432')">楼梯</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('566')">三纵</button>
                 </div>
                 <div id="setting" style="display: none;">
                     <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
-                        (手机端玩家请忽略) <br />
                         请在此处输入四个 英文字母 <br />
-                        以绑定键盘上对应的四个按键哦（不区分大小写）！<br />
+                        以绑定键盘上对应的四个按键哦（不区分大小写,手机端玩家请忽略按键设置）！<br />
                         电脑默认为DFJK哦！<br />
                     </h3>
                     <div class="input-group mb-3">
