@@ -218,6 +218,14 @@ function refreshGameLayer(box, loop, offset) {
                 i = 0;
             }
         }
+        if (key[pos] >= '1' && key[pos] <= '4') {
+            if (i == parseInt(key[pos]) - 1) {
+                i++;
+                if (i == 4) {
+                    i = 0;
+                }
+            }
+        }
     }
     else if (key[last] == '6') {
         i = lkey;
@@ -281,6 +289,14 @@ function refreshGameLayer(box, loop, offset) {
                         i++;
                         if (i == 4) {
                             i = 0;
+                        }
+                    }
+                    if (key[pos] >= '1' && key[pos] <= '4') {
+                        if (i == parseInt(key[pos]) - 1) {
+                            i++;
+                            if (i == 4) {
+                                i = 0;
+                            }
                         }
                     }
                 }
