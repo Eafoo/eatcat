@@ -8,6 +8,8 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, width=device-width,target-densitydpi=device-dpi" />
+    <link rel="icon" href="https://eafoo.github.io/eatcat/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="https://eafoo.github.io/eatcat/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="./static/index.css" rel="stylesheet" type="text/css">
@@ -58,14 +60,15 @@
                         onclick="foreach()">若游戏一直在加载请点击此按钮后刷新界面</button>
                     <br /><br />
                 </div>
-                <h2 style="font-size:1.2em; color:#fff; line-height:1.5em;">一键设置特殊键型（若按键全部消失请刷新界面）：</h2>
+
                 <div id="btn_group2" style="display: block;">
+                    <h2 style="font-size:1.2em; color:#fff; line-height:1.5em;">一键设置特殊键型（若按键全部消失请刷新界面）：</h2>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('0')">纯随机</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('5')">无纵连的随机</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('56')">短纵</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('2')">全纵连</button>
                     <br><br>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('23')">交互</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('32')">交互</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('123432')">楼梯</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('566')">三纵</button>
                 </div>
