@@ -566,6 +566,12 @@ function click(index) {
     gameTapEvent(fakeEvent)
 }
 
+function autoset(asss) {
+    key = asss.split('');
+    len = key.length;
+    cookie('note', note, 100);
+    gameRestart();
+
 function foreach() {
     var strCookie = document.cookie;
     var arrCookie = strCookie.split("; "); // 将多cookie切割为多个名/值对
