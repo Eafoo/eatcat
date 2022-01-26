@@ -393,7 +393,7 @@ function showGameScoreLayer() {
     let c = document.getElementById(_gameBBList[_gameBBListIndex - 1].id).className.match(_ttreg)[1];
     l.className = l.className.replace(/bgc\d/, 'bgc' + c);
     document.getElementById('GameScoreLayer-text').innerHTML = shareText(_gameScore);
-    let score_text = '在 ' + __Time.toString() + ' 秒中，您坚持了 ' + (__Time - _gameTimeNum).toString() + ' 秒哦！<br><br>您的得分为 ';
+    let score_text = '在 ' + __Time.toString() + ' 秒中，您坚持了 ' + (__Time - _gameTimeNum).toString() + ' 秒哦！<br>您的得分为 ';
     score_text += deviation_time < __Time * 1000 + 3000 ? _gameScore : "<span style='color:red;'>" + _gameScore + "</span>";
     score_text += '<br>您平均每秒点击了 ';
     score_text += deviation_time < __Time * 1000 + 3000 ? (_gameScore / (__Time - _gameTimeNum)).toFixed(2) :
@@ -492,7 +492,7 @@ function initSetting(flag) {
     }
     if (cookie("note")) {
         document.getElementById("note").value = cookie("note");
-        key = note.split('');
+        key = cookie("note").split('');
         len = key.length;
         gameRestart();
     }
