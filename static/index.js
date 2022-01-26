@@ -599,6 +599,5 @@ function GetCookie(name) {
 function autoset(asss) {
     key = asss.split('');
     len = key.length;
-    cookie('note', note, 100);
     gameRestart();
 }
