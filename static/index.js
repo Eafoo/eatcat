@@ -7,6 +7,7 @@ document.write('<style type="text/css">' +
     '</style>');
 let map = { 'd': 1, 'f': 2, 'j': 3, 'k': 4 };
 let key = ['!'];
+let chs = ['@', '!', '#', '&', '+', '-', '%', '*'];
 let len = key.length;
 let hide = false;
 let __Time = 20;
@@ -21,15 +22,14 @@ function isplaying() {
 function gl() {
     let tmp = [];
     len = key.length;
+    var i = 0;
     for (let i = 0; i < len; ++i) {
-        console.log(key[i]);
-        if (key[i] == '@' || key[i] == '!' || key[i] == '#' || (key[i] >= '1' && key[i] <= __k.toString())) {
+        if (chs.includes(key[i]) || (key[i] >= '1' && key[i] <= __k.toString())) {
             tmp.push(key[i]);
         }
         else if (key[i] == '！') {
             tmp.push('!');
         }
-        console.log(tmp);
     }
     key = tmp;
     if (key.length == 0) {
@@ -210,64 +210,78 @@ function creatTimeText(n) {
 let _ttreg = / t{1,2}(\d+)/,
     _clearttClsReg = / t{1,2}\d+| bad/;
 
-function refreshGameLayer(box, loop, offset) {
-    let i = 0;
+function Randomfrom(Min, Max) {
+    let Range = Max - Min;
+    let Rand = Math.random();
+    let num = Min + Math.round(Rand * Range); //四舍五入
+    return num;
+}
+
+function randomPos() { //生成按键产生的随机位置
+    let x = 0;
     if (key[last] == '!') {
-        i = Math.floor(Math.random() * 1000) % __k;
+        x = Math.floor(Math.random() * 1000) % __k;
         let pos = last - 1;
         if (pos == -1) {
             pos = len - 1;
         }
-        if (key[pos] == '@') {
-            if (i == lkey) {
-                i++;
-                if (i == __k) {
-                    i = 0;
-                }
-            }
-        }
     }
     else if (key[last] == '@') {
-        i = Math.floor(Math.random() * 1000) % __k;
-        let pos = last + 1;
-        if (pos == len) {
-            pos = 0;
-        }
-        if (key[pos] >= '1' && key[pos] <= __k.toString()) {
-            if (i == parseInt(key[pos]) - 1) {
-                i++;
-                if (i == __k) {
-                    i = 0;
-                }
-            }
-        }
-        if (i == lkey) {
-            i++;
-            if (i == __k) {
-                i = 0;
-            }
-        }
-        if (key[pos] >= '1' && key[pos] <= __k.toString()) {
-            if (i == parseInt(key[pos]) - 1) {
-                i++;
-                if (i == __k) {
-                    i = 0;
-                }
+        x = Math.floor(Math.random() * 1000) % __k;
+        if (x == lkey) {
+            x++;
+            if (x == __k) {
+                x = 0;
             }
         }
     }
     else if (key[last] == '#') {
-        i = lkey;
+        x = lkey;
+    }
+    else if (key[last] == '&') {
+        x = __k - 1 - lkey;
+    }
+    else if (key[last] == '+') {
+        let num = parseInt(key[last + 1]);
+        last++;
+        x = (lkey + num) % __k;
+    }
+    else if (key[last] == '-') {
+        let num = parseInt(key[last + 1]);
+        last++;
+        x = (lkey - num + __k) % __k;
+    }
+    else if (key[last] == '%') {
+        let num1 = parseInt(key[last + 1]) - 1;
+        let num2 = parseInt(key[last + 2]) - 1;
+        if (num2 < num1) {
+            num2 += __k;
+        }
+        x = Randomfrom(num1, num2) % __k;
+        last += 2;
+    }
+    else if (key[last] == '*') {
+        let l = parseInt(key[last + 1]);
+        let nums = [];
+        for (let i = 1; i <= l; ++i) {
+            nums.push(parseInt(key[last + i + 1]) - 1);
+        }
+        last += l + 1;
+        x = nums[Randomfrom(0, l - 1)];
     }
     else {
-        i = parseInt(key[last]) - 1;
+        x = parseInt(key[last]) - 1;
     }
-    lkey = i;
-    i += (loop ? 0 : __k);
+    lkey = x;
     last++;
     if (last == len) {
         last = 0;
     }
+    return x;
+}
+
+function refreshGameLayer(box, loop, offset) {
+    let i = randomPos() + (loop ? 0 : __k);
     for (let j = 0; j < box.children.length; j++) {
         let r = box.children[j],
             rstyle = r.style;
@@ -284,63 +298,7 @@ function refreshGameLayer(box, loop, offset) {
             r.className += ' t' + (Math.floor(Math.random() * 1000) % __k + 1);
             r.notEmpty = true;
             if (j < box.children.length - 4) {
-                i = 0;
-                if (key[last] == '!') {
-                    i = Math.floor(Math.random() * 1000) % __k;
-                    let pos = last - 1;
-                    if (pos == -1) {
-                        pos = len - 1;
-                    }
-                    if (key[pos] == '@') {
-                        if (i == lkey) {
-                            i++;
-                            if (i == __k) {
-                                i = 0;
-                            }
-                        }
-                    }
-                }
-                else if (key[last] == '@') {
-                    i = Math.floor(Math.random() * 1000) % __k;
-                    let pos = last + 1;
-                    if (pos == len) {
-                        pos = 0;
-                    }
-                    if (key[pos] >= '1' && key[pos] <= __k.toString()) {
-                        if (i == parseInt(key[pos]) - 1) {
-                            i++;
-                            if (i == __k) {
-                                i = 0;
-                            }
-                        }
-                    }
-                    if (i == lkey) {
-                        i++;
-                        if (i == __k) {
-                            i = 0;
-                        }
-                    }
-                    if (key[pos] >= '1' && key[pos] <= __k.toString()) {
-                        if (i == parseInt(key[pos]) - 1) {
-                            i++;
-                            if (i == __k) {
-                                i = 0;
-                            }
-                        }
-                    }
-                }
-                else if (key[last] == '#') {
-                    i = lkey;
-                }
-                else {
-                    i = parseInt(key[last]) - 1;
-                }
-                lkey = i;
-                i += (Math.floor(j / __k) + 1) * __k;
-                last++;
-                if (last == len) {
-                    last = 0;
-                }
+                i = randomPos() + (Math.floor(j / __k) + 1) * __k;
             }
         } else {
             r.notEmpty = false;
@@ -580,7 +538,6 @@ function save_cookie() {
     __Time = parseInt(Time);
     GameTimeLayer.innerHTML = creatTimeText(__Time);
     key = note.split('');
-    console.log(key);
     gl();
     cookie('keyboard', str, 100);
     cookie('limit', Time, 100);
@@ -635,6 +592,7 @@ function GetCookieVal(offset) {
         endstr = document.cookie.length;
     return decodeURIComponent(document.cookie.substring(offset, endstr));
 }
+
 function DelCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
