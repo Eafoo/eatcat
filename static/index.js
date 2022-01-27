@@ -430,12 +430,12 @@ function showGameScoreLayer() {
     let l = document.getElementById('GameScoreLayer');
     let c = document.getElementById(_gameBBList[_gameBBListIndex - 1].id).className.match(_ttreg)[1];
     l.className = l.className.replace(/bgc\d/, 'bgc' + c);
-    document.getElementById('GameScoreLayer-text').innerHTML = hide ? '' : shareText(_gameScore);
-    let score_text = '在 ' + __Time.toString() + ' 秒中，您坚持了 ' + (__Time - _gameTimeNum).toString() + ' 秒哦！<br>您的得分为 ';
-    score_text += deviation_time < __Time * 1000 + 3000 ? _gameScore : "<span style='color:red;'>" + _gameScore + "</span>";
+    document.getElementById('GameScoreLayer-text').innerHTML = hide ? '' : "<span style='color:red;'>" + shareText(_gameScore) + "</span>";
+    let score_text = '在 ' + "<span style='color:red;'>" + __Time.toString() + "</span>" + ' 秒中，您坚持了 ';
+    score_text += "<span style='color:red;'>" + (__Time - _gameTimeNum).toString() + "</span>" + ' 秒哦！<br>您的得分为 ';
+    score_text += "<span style='color:red;'>" + _gameScore + "</span>";
     score_text += '<br>您平均每秒点击了 ';
-    score_text += deviation_time < __Time * 1000 + 3000 ? (_gameScore / (__Time - _gameTimeNum)).toFixed(2) :
-        "<span style='color:red;'>" + (_gameScore / (__Time - _gameTimeNum)).toFixed(2);
+    score_text += "<span style='color:red;'>" + (_gameScore / (__Time - _gameTimeNum)).toFixed(2);
     score_text += "</span>" + ' 次哦！';
     document.getElementById('GameScoreLayer-score').innerHTML = score_text;
     let bast = cookie('bast-score');
@@ -445,8 +445,9 @@ function showGameScoreLayer() {
             cookie('bast-score', bast, 100);
         }
     }
-    document.getElementById('GameScoreLayer-bast').innerHTML = '历史最佳得分 ' + bast;
-    let now = '您的自定义键型为：' + key.join('');
+    document.getElementById('GameScoreLayer-bast').innerHTML = '历史最佳得分 ' + "<span style='color:red;'>" + bast + "</span>";
+    let now = '您的自定义键型为：' + "<span style='color:red;'>" + key.join('')
+        + "</span>";
     document.getElementById('now').innerHTML = now;
     l.style.display = 'block';
 }
