@@ -6,14 +6,36 @@ document.write('<style type="text/css">' +
         '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position:fixed;}@media screen and (orientation:landscape) {#landscape {display: box; display: -webkit-box; display: -moz-box; display: -ms-flexbox;}}') +
     '</style>');
 let map = { 'd': 1, 'f': 2, 'j': 3, 'k': 4 };
-let key = ['0'];
+let key = ['!'];
 let len = key.length;
+let hide = false;
 let __Time = 20;
+let __k = 4;
 
 function isplaying() {
     return document.getElementById('welcome').style.display == 'none' &&
         document.getElementById('GameScoreLayer').style.display == 'none' &&
         document.getElementById("setting").style.display == 'none';
+}
+
+function gl() {
+    let tmp = [];
+    len = key.length;
+    for (let i = 0; i < len; ++i) {
+        console.log(key[i]);
+        if (key[i] == '@' || key[i] == '!' || key[i] == '#' || (key[i] >= '1' && key[i] <= '9')) {
+            tmp.push(key[i]);
+        }
+        else if (key[i] == '！') {
+            tmp.push('!');
+        }
+        console.log(tmp);
+    }
+    key = tmp;
+    if (key.length == 0) {
+        key = ['!'];
+    }
+    len = key.length;
 }
 
 if (isDesktop) {
@@ -50,7 +72,7 @@ function init() {
         GameLayerBG.onmousedown = gameTapEvent;
     }
     gameInit();
-    initSetting(1);
+    initSetting();
     window.addEventListener('resize', refreshSize, false);
     let btn = document.getElementById('ready-btn');
     btn.className = 'btn btn-primary btn-lg';
@@ -79,8 +101,8 @@ function _refreshSize() {
         for (let j = 0; j < box.children.length; j++) {
             let r = box.children[j],
                 rstyle = r.style;
-            rstyle.left = (j % 4) * blockSize + 'px';
-            rstyle.bottom = Math.floor(j / 4) * blockSize + 'px';
+            rstyle.left = (j % __k) * blockSize + 'px';
+            rstyle.bottom = Math.floor(j / __k) * blockSize + 'px';
             rstyle.width = blockSize + 'px';
             rstyle.height = blockSize + 'px';
         }
@@ -96,12 +118,12 @@ function _refreshSize() {
     let y = ((_gameBBListIndex) % 10) * blockSize;
     f.y = y;
     f.style[transform] = 'translate3D(0,' + f.y + 'px,0)';
-    a.y = -blockSize * Math.floor(f.children.length / 4) + y;
+    a.y = -blockSize * Math.floor(f.children.length / __k) + y;
     a.style[transform] = 'translate3D(0,' + a.y + 'px,0)';
 }
 
 function countBlockSize() {
-    blockSize = body.offsetWidth / 4;
+    blockSize = body.offsetWidth / __k;
     body.style.height = window.innerHeight + 'px';
     GameLayerBG.style.height = window.innerHeight + 'px';
     touchArea[0] = window.innerHeight - blockSize * 0;
@@ -183,58 +205,58 @@ let _ttreg = / t{1,2}(\d+)/,
 
 function refreshGameLayer(box, loop, offset) {
     let i = 0;
-    if (key[last] == '0') {
-        i = Math.floor(Math.random() * 1000) % 4;
+    if (key[last] == '!') {
+        i = Math.floor(Math.random() * 1000) % __k;
         let pos = last - 1;
         if (pos == -1) {
             pos = len - 1;
         }
-        if (key[pos] == '5') {
+        if (key[pos] == '@') {
             if (i == lkey) {
                 i++;
-                if (i == 4) {
+                if (i == __k) {
                     i = 0;
                 }
             }
         }
     }
-    else if (key[last] == '5') {
-        i = Math.floor(Math.random() * 1000) % 4;
+    else if (key[last] == '@') {
+        i = Math.floor(Math.random() * 1000) % __k;
         let pos = last + 1;
         if (pos == len) {
             pos = 0;
         }
-        if (key[pos] >= '1' && key[pos] <= '4') {
+        if (key[pos] >= '1' && key[pos] <= __k.toString()) {
             if (i == parseInt(key[pos]) - 1) {
                 i++;
-                if (i == 4) {
+                if (i == __k) {
                     i = 0;
                 }
             }
         }
         if (i == lkey) {
             i++;
-            if (i == 4) {
+            if (i == __k) {
                 i = 0;
             }
         }
-        if (key[pos] >= '1' && key[pos] <= '4') {
+        if (key[pos] >= '1' && key[pos] <= __k.toString()) {
             if (i == parseInt(key[pos]) - 1) {
                 i++;
-                if (i == 4) {
+                if (i == __k) {
                     i = 0;
                 }
             }
         }
     }
-    else if (key[last] == '6') {
+    else if (key[last] == '#') {
         i = lkey;
     }
     else {
         i = parseInt(key[last]) - 1;
     }
     lkey = i;
-    i += (loop ? 0 : 4);
+    i += (loop ? 0 : __k);
     last++;
     if (last == len) {
         last = 0;
@@ -242,72 +264,72 @@ function refreshGameLayer(box, loop, offset) {
     for (let j = 0; j < box.children.length; j++) {
         let r = box.children[j],
             rstyle = r.style;
-        rstyle.left = (j % 4) * blockSize + 'px';
-        rstyle.bottom = Math.floor(j / 4) * blockSize + 'px';
+        rstyle.left = (j % __k) * blockSize + 'px';
+        rstyle.bottom = Math.floor(j / __k) * blockSize + 'px';
         rstyle.width = blockSize + 'px';
         rstyle.height = blockSize + 'px';
         r.className = r.className.replace(_clearttClsReg, '');
         if (i == j) {
             _gameBBList.push({
-                cell: i % 4,
+                cell: i % __k,
                 id: r.id
             });
-            r.className += ' t' + (Math.floor(Math.random() * 1000) % 5 + 1);
+            r.className += ' t' + (Math.floor(Math.random() * 1000) % __k + 1);
             r.notEmpty = true;
             if (j < box.children.length - 4) {
                 i = 0;
-                if (key[last] == '0') {
-                    i = Math.floor(Math.random() * 1000) % 4;
+                if (key[last] == '!') {
+                    i = Math.floor(Math.random() * 1000) % __k;
                     let pos = last - 1;
                     if (pos == -1) {
                         pos = len - 1;
                     }
-                    if (key[pos] == '5') {
+                    if (key[pos] == '@') {
                         if (i == lkey) {
                             i++;
-                            if (i == 4) {
+                            if (i == __k) {
                                 i = 0;
                             }
                         }
                     }
                 }
-                else if (key[last] == '5') {
-                    i = Math.floor(Math.random() * 1000) % 4;
+                else if (key[last] == '@') {
+                    i = Math.floor(Math.random() * 1000) % __k;
                     let pos = last + 1;
                     if (pos == len) {
                         pos = 0;
                     }
-                    if (key[pos] >= '1' && key[pos] <= '4') {
+                    if (key[pos] >= '1' && key[pos] <= __k.toString()) {
                         if (i == parseInt(key[pos]) - 1) {
                             i++;
-                            if (i == 4) {
+                            if (i == __k) {
                                 i = 0;
                             }
                         }
                     }
                     if (i == lkey) {
                         i++;
-                        if (i == 4) {
+                        if (i == __k) {
                             i = 0;
                         }
                     }
-                    if (key[pos] >= '1' && key[pos] <= '4') {
+                    if (key[pos] >= '1' && key[pos] <= __k.toString()) {
                         if (i == parseInt(key[pos]) - 1) {
                             i++;
-                            if (i == 4) {
+                            if (i == __k) {
                                 i = 0;
                             }
                         }
                     }
                 }
-                else if (key[last] == '6') {
+                else if (key[last] == '#') {
                     i = lkey;
                 }
                 else {
                     i = parseInt(key[last]) - 1;
                 }
                 lkey = i;
-                i += (Math.floor(j / 4) + 1) * 4;
+                i += (Math.floor(j / __k) + 1) * __k;
                 last++;
                 if (last == len) {
                     last = 0;
@@ -408,7 +430,7 @@ function showGameScoreLayer() {
     let l = document.getElementById('GameScoreLayer');
     let c = document.getElementById(_gameBBList[_gameBBListIndex - 1].id).className.match(_ttreg)[1];
     l.className = l.className.replace(/bgc\d/, 'bgc' + c);
-    document.getElementById('GameScoreLayer-text').innerHTML = shareText(_gameScore);
+    document.getElementById('GameScoreLayer-text').innerHTML = hide ? '' : shareText(_gameScore);
     let score_text = '在 ' + __Time.toString() + ' 秒中，您坚持了 ' + (__Time - _gameTimeNum).toString() + ' 秒哦！<br>您的得分为 ';
     score_text += deviation_time < __Time * 1000 + 3000 ? _gameScore : "<span style='color:red;'>" + _gameScore + "</span>";
     score_text += '<br>您平均每秒点击了 ';
@@ -489,10 +511,7 @@ function cookie(name, value, time) {
 
 document.write(createGameLayer());
 
-function initSetting(flag) {
-    if (!flag) {
-        return;
-    }
+function initSetting() {
     if (cookie("keyboard")) {
         document.getElementById("keyboard").value = cookie("keyboard");
         map = {}
@@ -507,12 +526,16 @@ function initSetting(flag) {
         GameTimeLayer.innerHTML = creatTimeText(__Time);
     }
     if (cookie("note")) {
-
         let str = cookie("note").toString();
         document.getElementById("note").value = str;
         key = str.split('');
-        len = key.length;
+        gl();
         gameRestart();
+    }
+    if (cookie("hide")) {
+        if (cookie("hide").toString() == '1') {
+            hide = 1;
+        }
     }
 }
 
@@ -532,6 +555,7 @@ function show_setting() {
     document.getElementById("keyboard").value = str.join('');
     document.getElementById("timeinput").value = __Time.toString();
     document.getElementById("note").value = key.join('');
+    document.getElementById("note").checked = hide;
     document.getElementById("btn_group").style.display = "none";
     document.getElementById("btn_group2").style.display = "none";
     document.getElementById("tt").style.display = "none";
@@ -543,6 +567,7 @@ function save_cookie() {
     let str = document.getElementById("keyboard").value;
     let Time = document.getElementById("timeinput").value;
     let note = document.getElementById("note").value;
+    hide = document.getElementById("hide").checked;
     map = {};
     map[str.charAt(0).toLowerCase()] = 1;
     map[str.charAt(1).toLowerCase()] = 2;
@@ -551,11 +576,17 @@ function save_cookie() {
     __Time = parseInt(Time);
     GameTimeLayer.innerHTML = creatTimeText(__Time);
     key = note.split('');
-    len = key.length;
+    console.log(key);
+    gl();
     cookie('keyboard', str, 100);
     cookie('limit', Time, 100);
     cookie('note', note, 100);
-    initSetting(0);
+    if (hide) {
+        cookie('hide', '1', 100);
+    }
+    else {
+        cookie('hide', '0', 100);
+    }
     gameRestart();
 }
 
