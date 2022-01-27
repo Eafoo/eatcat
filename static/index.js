@@ -10,7 +10,7 @@ let key = ['!'];
 let len = key.length;
 let hide = false;
 let __Time = 20;
-let __k = 5;
+let __k = 4;
 
 function isplaying() {
     return document.getElementById('welcome').style.display == 'none' &&
