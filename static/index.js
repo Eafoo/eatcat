@@ -45,6 +45,10 @@ if (isDesktop) {
         if (Object.keys(map).indexOf(key) !== -1 && isplaying()) {
             click(map[key]);
         }
+        else if (key == 'r' && document.getElementById('GameScoreLayer').style.display != 'none') {
+            gameRestart();
+            document.getElementById('GameScoreLayer').style.display = 'none'
+        }
     }
 }
 
@@ -442,12 +446,11 @@ function showGameScoreLayer() {
     score_text += "</span>" + ' 次哦！';
     document.getElementById('GameScoreLayer-score').innerHTML = score_text;
     let bast = cookie('bast-score');
-    if (deviation_time < __Time * 1000 + 1000) {
-        if (!bast || _gameScore > bast) {
-            bast = _gameScore;
-            cookie('bast-score', bast, 100);
-        }
+    if (!bast || _gameScore > bast) {
+        bast = _gameScore;
+        cookie('bast-score', bast, 100);
     }
+
     document.getElementById('GameScoreLayer-bast').innerHTML = '历史最佳得分 ' + "<span style='color:red;'>" + bast + "</span>";
     let now = '您的自定义键型为：' + "<span style='color:red;'>" + key.join('')
         + "</span>";
@@ -474,9 +477,6 @@ function backBtn() {
 function shareText(score) {
 
     deviation_time = (date2.getTime() - _date1.getTime())
-    if (deviation_time > __Time * 1000 + 1000) {
-        return '实际时间比设置时间多了' + ((deviation_time / 1000) - __Time).toFixed(2) + "秒，本次成绩作废哦！";
-    }
     if (score <= 2.5 * __Time) return '加油！我相信您可以的！';
     if (score <= 5 * __Time) return '^_^ 加把劲，底力大王就是您！';
     if (score <= 7.5 * __Time) return '您！';
