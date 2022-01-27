@@ -10,7 +10,7 @@ let key = ['!'];
 let len = key.length;
 let hide = false;
 let __Time = 20;
-let __k = 4;
+let __k = 5;
 
 function isplaying() {
     return document.getElementById('welcome').style.display == 'none' &&
@@ -23,7 +23,7 @@ function gl() {
     len = key.length;
     for (let i = 0; i < len; ++i) {
         console.log(key[i]);
-        if (key[i] == '@' || key[i] == '!' || key[i] == '#' || (key[i] >= '1' && key[i] <= '9')) {
+        if (key[i] == '@' || key[i] == '!' || key[i] == '#' || (key[i] >= '1' && key[i] <= __k.toString())) {
             tmp.push(key[i]);
         }
         else if (key[i] == '！') {
