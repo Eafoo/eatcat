@@ -10,7 +10,7 @@ let key = ['!'];
 let len = key.length;
 let hide = false;
 let __Time = 20;
-let __k = 4;
+let __k = 5;
 
 function isplaying() {
     return document.getElementById('welcome').style.display == 'none' &&
@@ -555,7 +555,7 @@ function show_setting() {
     document.getElementById("keyboard").value = str.join('');
     document.getElementById("timeinput").value = __Time.toString();
     document.getElementById("note").value = key.join('');
-    document.getElementById("note").checked = hide;
+    document.getElementById("hide").checked = hide;
     document.getElementById("btn_group").style.display = "none";
     document.getElementById("btn_group2").style.display = "none";
     document.getElementById("tt").style.display = "none";
