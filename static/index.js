@@ -175,10 +175,7 @@ function gameStart() {
     _gameTime = setInterval(gameTime, 1000);
 }
 
-let date2 = new Date();
-
 function gameOver() {
-    date2 = new Date();
     _gameOver = true;
     clearInterval(_gameTime);
     setTimeout(function () {
@@ -434,15 +431,15 @@ function showGameScoreLayer() {
     let c = document.getElementById(_gameBBList[_gameBBListIndex - 1].id).className.match(_ttreg)[1];
     l.className = l.className.replace(/bgc\d/, 'bgc' + c);
     document.getElementById('GameScoreLayer-text').innerHTML = hide ? '' : "<span style='color:red;'>" + shareText(_gameScore) + "</span>";
-    let score_text = '您坚持了 ';
-    score_text += "<span style='color:red;'>" + (deviation_time / 1000).toFixed(2) + "</span>" + ' 秒哦！<br>您的得分为 ';
+    let score_text = '在 ' + "<span style='color:red;'>" + __Time.toString() + "</span>" + ' 秒中，您坚持了 ';
+    score_text += "<span style='color:red;'>" + (__Time - _gameTimeNum).toString() + "</span>" + ' 秒哦！<br>您的得分为 ';
     score_text += "<span style='color:red;'>" + _gameScore + "</span>";
     score_text += '<br>您平均每秒点击了 ';
-    score_text += "<span style='color:red;'>" + (_gameScore * 1000 / deviation_time).toFixed(2);
+    score_text += "<span style='color:red;'>" + (_gameScore / (__Time - _gameTimeNum)).toFixed(2);
     score_text += "</span>" + ' 次哦！';
     document.getElementById('GameScoreLayer-score').innerHTML = score_text;
     let bast = cookie('bast-score');
-    if (deviation_time < __Time * 1000 + 1000) {
+    if (deviation_time < __Time * 1000 + 3000) {
         if (!bast || _gameScore > bast) {
             bast = _gameScore;
             cookie('bast-score', bast, 100);
@@ -472,9 +469,9 @@ function backBtn() {
 }
 
 function shareText(score) {
-
+    let date2 = new Date();
     deviation_time = (date2.getTime() - _date1.getTime())
-    if (deviation_time > __Time * 1000 + 1000) {
+    if (deviation_time > __Time * 1000 + 3000) {
         return '实际时间比设置时间多了' + ((deviation_time / 1000) - __Time).toFixed(2) + "秒，本次成绩作废哦！";
     }
     if (score <= 2.5 * __Time) return '加油！我相信您可以的！';
