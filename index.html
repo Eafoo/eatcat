@@ -63,14 +63,14 @@
 
                 <div id="btn_group2" style="display: block;">
                     <h2 style="font-size:1.2em; color:#fff; line-height:1.5em;">一键设置特殊键型（若按键全部消失请刷新界面）：</h2>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('0')">纯随机</button>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('5')">无纵连的随机</button>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('56')">短纵</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('!')">纯随机</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('@')">无纵连的随机</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('@#')">短纵</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('2')">全纵连</button>
                     <br><br>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('32')">交互</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('123432')">楼梯</button>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('566')">三纵</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('@##')">三纵</button>
                 </div>
                 <div id="setting" style="display: none;">
                     <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
@@ -88,12 +88,17 @@
                         <input type="text" id="timeinput" class="form-control" maxlength=4>
                     </div>
                     <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
-                        请在此处输入您想要设置的键型哦~ <a href="https://docs.qq.com/doc/DYVNMQ0pEWm12VGpv/"
-                            target="_blank">（详细说明请点击这里）</a> <br />
+                        请在此处输入您想要设置的键型哦~ <a href="https://docs.qq.com/doc/DYVNMQ0pEWm12VGpv/" target="_blank">
+                            <br>（注意：键型设置有改动，详细说明请点击这里）</a> <br />
                     </h3>
                     <div class="input-group mb-3">
                         <input type="text" id="note" class="form-control" maxlength=99999>
                     </div>
+                    <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
+                        隐藏结算后显示的评语
+                    </h3>
+                    <input type="checkbox" id="hide" class="form-control">
+                    <br>
                     <button type="button" class="btn btn-secondary btn-lg"
                         onclick="show_btn();save_cookie();">完成</button>
                 </div>
