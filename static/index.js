@@ -12,6 +12,8 @@ let len = key.length;
 let hide = false;
 let __Time = 20;
 let __k = 4;
+let uppic = false;
+var url = 'https://eafoo.github.io/eatcat/static/image/ClickBefore.png';
 
 function isplaying() {
     return document.getElementById('welcome').style.display == 'none' &&
@@ -109,6 +111,7 @@ function _refreshSize() {
             rstyle.bottom = Math.floor(j / __k) * blockSize + 'px';
             rstyle.width = blockSize + 'px';
             rstyle.height = blockSize + 'px';
+            rstyle.backgroundImage = "url(" + url + ")";
         }
     }
     let f, a;
@@ -289,12 +292,14 @@ function refreshGameLayer(box, loop, offset) {
         rstyle.bottom = Math.floor(j / __k) * blockSize + 'px';
         rstyle.width = blockSize + 'px';
         rstyle.height = blockSize + 'px';
+        rstyle.backgroundImage = "none";
         r.className = r.className.replace(_clearttClsReg, '');
         if (i == j) {
             _gameBBList.push({
                 cell: i % __k,
                 id: r.id
             });
+            rstyle.backgroundImage = "url(" + url + ")";
             r.className += ' t' + (Math.floor(Math.random() * 1000) % __k + 1);
             r.notEmpty = true;
             if (j < box.children.length - 4) {
@@ -352,6 +357,7 @@ function gameTapEvent(e) {
         createjs.Sound.play("tap");
         tar = document.getElementById(p.id);
         tar.className = tar.className.replace(_ttreg, ' tt$1');
+        tar.style.backgroundImage = "none";
         _gameBBListIndex++;
         _gameScore++;
         gameLayerMoveNextRow();
@@ -620,4 +626,10 @@ function autoset(asss) {
     len = key.length;
     cookie('note', asss, 100);
     gameRestart();
+}
+
+function showImg(input) {
+    uppic = 1;
+    var file = input.files[0];
+    url = window.URL.createObjectURL(file);
 }
