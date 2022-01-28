@@ -111,7 +111,6 @@ function _refreshSize() {
             rstyle.bottom = Math.floor(j / __k) * blockSize + 'px';
             rstyle.width = blockSize + 'px';
             rstyle.height = blockSize + 'px';
-            rstyle.backgroundImage = "url(" + url + ")";
         }
     }
     let f, a;
