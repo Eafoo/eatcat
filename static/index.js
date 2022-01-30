@@ -477,10 +477,10 @@ function backBtn() {
 function shareText(score) {
 
     deviation_time = (date2.getTime() - _date1.getTime())
-    if (score <= 2.5 * __Time) return '加油！我相信您可以的！';
-    if (score <= 5 * __Time) return '^_^ 加把劲，底力大王就是您！';
-    if (score <= 7.5 * __Time) return '您！';
-    if (score <= 10 * __Time) return '太 您 了！';
+    if (score <= 2.5 * __Time) return '老杨祝您新春快乐！';
+    if (score <= 5 * __Time) return '^_^ 老杨祝您学业进步！';
+    if (score <= 7.5 * __Time) return '老杨祝您财源广进！';
+    if (score <= 10 * __Time) return '老杨感到十分倾佩！';
     return '您是外星人嘛？';
 }
 
