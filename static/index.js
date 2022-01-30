@@ -12,13 +12,13 @@ let len = key.length;
 let hide = false;
 let __Time = 20;
 let __k = 4;
-let uppic = false;
+let _close = false;
 var url = 'https://eafoo.github.io/eatcat/static/image/ClickBefore.png';
 
 function isplaying() {
     return document.getElementById('welcome').style.display == 'none' &&
         document.getElementById('GameScoreLayer').style.display == 'none' &&
-        document.getElementById("setting").style.display == 'none';
+        document.getElementById("setting1").style.display == 'none';
 }
 
 function gl() {
@@ -199,7 +199,9 @@ function gameTime() {
         GameTimeLayer.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;时间到！';
         gameOver();
         GameLayerBG.className += ' flash';
-        createjs.Sound.play("end");
+        if (!_close) {
+            createjs.Sound.play("end");
+        }
     } else {
         GameTimeLayer.innerHTML = creatTimeText(_gameTimeNum);
     }
@@ -299,9 +301,10 @@ function refreshGameLayer(box, loop, offset) {
                 id: r.id
             });
             rstyle.backgroundImage = "url(" + url + ")";
-            r.className += ' t' + (Math.floor(Math.random() * 1000) % __k + 1);
+            rstyle.backgroundSize = 'cover';
+            r.className += ' t' + (Math.floor(Math.random() * 1000) % (__k + 1) + 1);
             r.notEmpty = true;
-            if (j < box.children.length - 4) {
+            if (j < box.children.length - __k) {
                 i = randomPos() + (Math.floor(j / __k) + 1) * __k;
             }
         } else {
@@ -311,25 +314,25 @@ function refreshGameLayer(box, loop, offset) {
     if (loop) {
         box.style.webkitTransitionDuration = '0ms';
         box.style.display = 'none';
-        box.y = -blockSize * (Math.floor(box.children.length / 4) + (offset || 0)) * loop;
+        box.y = -blockSize * (Math.floor(box.children.length / __k) + (offset || 0)) * loop;
         setTimeout(function () {
             box.style[transform] = 'translate3D(0,' + box.y + 'px,0)';
             setTimeout(function () {
                 box.style.display = 'block';
-            }, 100);
-        }, 200);
+            }, 0);
+        }, 0);
     } else {
         box.y = 0;
         box.style[transform] = 'translate3D(0,' + box.y + 'px,0)';
     }
-    box.style[transitionDuration] = '150ms';
+    box.style[transitionDuration] = '100ms';
 }
 
 function gameLayerMoveNextRow() {
     for (let i = 0; i < GameLayer.length; i++) {
         let g = GameLayer[i];
         g.y += blockSize;
-        if (g.y > blockSize * (Math.floor(g.children.length / 4))) {
+        if (g.y > blockSize * (Math.floor(g.children.length / __k))) {
             refreshGameLayer(g, 1, -1);
         } else {
             g.style[transform] = 'translate3D(0,' + g.y + 'px,0)';
@@ -345,6 +348,7 @@ function gameTapEvent(e) {
     let y = e.clientY || e.targetTouches[0].clientY,
         x = (e.clientX || e.targetTouches[0].clientX) - body.offsetLeft,
         p = _gameBBList[_gameBBListIndex];
+
     if (y > touchArea[0] || y < touchArea[1]) {
         return false;
     }
@@ -353,7 +357,9 @@ function gameTapEvent(e) {
         if (!_gameStart) {
             gameStart();
         }
-        createjs.Sound.play("tap");
+        if (!_close) {
+            createjs.Sound.play("tap");
+        }
         tar = document.getElementById(p.id);
         tar.className = tar.className.replace(_ttreg, ' tt$1');
         tar.style.backgroundImage = "none";
@@ -361,7 +367,9 @@ function gameTapEvent(e) {
         _gameScore++;
         gameLayerMoveNextRow();
     } else if (_gameStart && !tar.notEmpty) {
-        createjs.Sound.play("err");
+        if (!_close) {
+            createjs.Sound.play("err");
+        }
         gameOver();
         tar.className += ' bad';
     }
@@ -373,9 +381,9 @@ function createGameLayer() {
     for (let i = 1; i <= 2; i++) {
         let id = 'GameLayer' + i;
         html += '<div id="' + id + '" class="GameLayer">';
-        for (let j = 0; j < 10; j++) {
-            for (let k = 0; k < 4; k++) {
-                html += '<div id="' + id + '-' + (k + j * 4) + '" num="' + (k + j * 4) + '" class="block' + (k ? ' bl' : '') +
+        for (let j = 0; j < (__k * 2 >= 10 ? __k * 2 : __k * 3); j++) {
+            for (let k = 0; k < __k; k++) {
+                html += '<div id="' + id + '-' + (k + j * __k) + '" num="' + (k + j * __k) + '" class="block' + (k ? ' bl' : '') +
                     '"></div>';
             }
         }
@@ -479,26 +487,6 @@ function cookie(name, value, time) {
 document.write(createGameLayer());
 
 function initSetting() {
-    if (cookie("keyboard")) {
-        document.getElementById("keyboard").value = cookie("keyboard");
-        map = {}
-        map[cookie("keyboard").charAt(0).toLowerCase()] = 1;
-        map[cookie("keyboard").charAt(1).toLowerCase()] = 2;
-        map[cookie("keyboard").charAt(2).toLowerCase()] = 3;
-        map[cookie("keyboard").charAt(3).toLowerCase()] = 4;
-    }
-    if (cookie("limit")) {
-        document.getElementById("timeinput").value = cookie("limit");
-        __Time = parseInt(cookie("limit"));
-        GameTimeLayer.innerHTML = creatTimeText(__Time);
-    }
-    if (cookie("note")) {
-        let str = cookie("note").toString();
-        document.getElementById("note").value = str;
-        key = str.split('');
-        gl();
-        gameRestart();
-    }
     if (cookie("hide")) {
         if (cookie("hide").toString() == '1') {
             hide = 1;
@@ -506,19 +494,34 @@ function initSetting() {
     }
 }
 
-function show_btn() {
+function show_btn(i) {
     document.getElementById("tt").style.display = "block";
     document.getElementById("ttt").style.display = "block";
     document.getElementById("btn_group").style.display = "block";
     document.getElementById("btn_group2").style.display = "block";
-    document.getElementById("setting").style.display = "none";
+    document.getElementById("setting" + i.toString()).style.display = "none";
 }
 
+function nxtpage(i) {
+    document.getElementById("setting" + i.toString()).style.display = "none";
+    document.getElementById("setting" + (i + 1).toString()).style.display = "block";
+}
+
+function lstpage(i) {
+    document.getElementById("setting" + i.toString()).style.display = "none";
+    document.getElementById("setting" + (i - 1).toString()).style.display = "block";
+}
+
+
 function show_setting() {
-    var str = ['d', 'f', 'j', 'k'];
+    var str = [];
+    for (var i = 1; i <= __k; ++i) {
+        str.push('a');
+    }
     for (var ke in map) {
         str[map[ke] - 1] = ke.charAt(0);
     }
+    document.getElementById("k").value = __k.toString();
     document.getElementById("keyboard").value = str.join('');
     document.getElementById("timeinput").value = __Time.toString();
     document.getElementById("note").value = key.join('');
@@ -527,7 +530,11 @@ function show_setting() {
     document.getElementById("btn_group2").style.display = "none";
     document.getElementById("tt").style.display = "none";
     document.getElementById("ttt").style.display = "none";
-    document.getElementById("setting").style.display = "block";
+    document.getElementById("setting1").style.display = "block";
+}
+
+function parseElement(htmlString) {
+    return new DOMParser().parseFromString(htmlString, 'text/html').body.childNodes[0]
 }
 
 function save_cookie() {
@@ -535,18 +542,37 @@ function save_cookie() {
     let Time = document.getElementById("timeinput").value;
     let note = document.getElementById("note").value;
     hide = document.getElementById("hide").checked;
+    _close = document.getElementById("close").checked;
+    let tsmp = parseInt(document.getElementById("k").value);
+    if (tsmp != __k) {
+        __k = tsmp;
+        var el = document.getElementById('GameLayerBG');
+        let fa = el.parentNode;
+        fa.removeChild(el);
+        fa.removeChild(GameTimeLayer);
+        fa.appendChild(parseElement(createGameLayer()));
+        fa.appendChild(parseElement("<div id = \"GameTimeLayer\"></div>"));
+        GameTimeLayer = document.getElementById("GameTimeLayer");
+        GameLayer = [];
+        GameLayer.push(document.getElementById('GameLayer1'));
+        GameLayer[0].children = GameLayer[0].querySelectorAll('div');
+        GameLayer.push(document.getElementById('GameLayer2'));
+        GameLayer[1].children = GameLayer[1].querySelectorAll('div');
+        GameLayerBG = document.getElementById('GameLayerBG');
+        if (GameLayerBG.ontouchstart === null) {
+            GameLayerBG.ontouchstart = gameTapEvent;
+        } else {
+            GameLayerBG.onmousedown = gameTapEvent;
+        }
+    }
     map = {};
-    map[str.charAt(0).toLowerCase()] = 1;
-    map[str.charAt(1).toLowerCase()] = 2;
-    map[str.charAt(2).toLowerCase()] = 3;
-    map[str.charAt(3).toLowerCase()] = 4;
+    for (let i = 0; i < __k; ++i) {
+        map[str.charAt(i).toLowerCase()] = i + 1;
+    }
     __Time = parseInt(Time);
     GameTimeLayer.innerHTML = creatTimeText(__Time);
     key = note.split('');
     gl();
-    cookie('keyboard', str, 100);
-    cookie('limit', Time, 100);
-    cookie('note', note, 100);
     if (hide) {
         cookie('hide', '1', 100);
     }
@@ -623,12 +649,10 @@ function GetCookie(name) {
 function autoset(asss) {
     key = asss.split('');
     len = key.length;
-    cookie('note', asss, 100);
     gameRestart();
 }
 
 function showImg(input) {
-    uppic = 1;
     var file = input.files[0];
     url = window.URL.createObjectURL(file);
 }
