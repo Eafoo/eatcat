@@ -19,6 +19,12 @@
     <script src="./static/index.js"></script>
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <?php
+    session_start();
+    $str = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'), 0, 8);
+    $_SESSION['t'] = $str;
+    echo "<script>var tj='" . $str . "'</script>";
+    ?>
 </head>
 
 <body onLoad="init()" oncontextmenu=self.event.returnValue=false>
@@ -45,9 +51,6 @@
         <div class="FILL BOX-M" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:5;">
             <div style="margin:0 8% 0 9%;">
                 <div style="font-size:2.0em; color:#FEF002;" id="tt">吃掉小猫猫（支持高度自定义~）</div><br />
-                <div style="font-size: 1.2em; color:rgb(45, 255, 4); line-height:1.5em;" id="tttt">
-                    更新公告：现在可以在设置内自定义按键图片了！<br />
-                </div>
                 <div style="font-size: 1.2em; color:#fff; line-height:1.5em;" id="ttt">
                     对杨校无恶意<br />
                     从最底下老杨开始<br />
@@ -104,12 +107,6 @@
                         隐藏结算后显示的评语
                     </h3>
                     <input type="checkbox" id="hide" class="form-control">
-                    <br>
-                    <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
-                        自定义按键显示的图片（可以是动图哦~）
-                    </h3>
-                    <input id="upload-input" type="file" accept="image/gif, image/jpg, image/png, image/webp"
-                        onchange="showImg(this)" />
                     <br>
                     <button type="button" class="btn btn-secondary btn-lg"
                         onclick="show_btn();save_cookie();">完成</button>
