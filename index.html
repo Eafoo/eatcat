@@ -45,7 +45,7 @@
             <div style="margin:0 8% 0 9%;">
                 <div style="font-size:2.0em; color:#FEF002;" id="tt">吃掉小猫猫（支持高度自定义~）</div><br />
                 <div style="font-size: 1.2em; color:rgb(45, 255, 4); line-height:1.5em;" id="tttt">
-                    更新公告：现在可以在设置内自定义按键图片了！<br />
+                    更新公告：现在可以在设置多个轨道了！<br />
                 </div>
                 <div style="font-size: 1.2em; color:#fff; line-height:1.5em;" id="ttt">
                     从最底下小猫猫开始<br />
@@ -76,14 +76,20 @@
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('123432')">楼梯</button>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="autoset('@##')">三纵</button>
                 </div>
-                <div id="setting" style="display: none;">
+                <div id="setting1" style="display: none;">
                     <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
-                        请在此处输入四个 英文字母 <br />
-                        以绑定键盘上对应的四个按键哦（不区分大小写,手机端玩家请忽略按键设置）！<br />
-                        电脑默认为DFJK哦！<br />
+                        请在此处输入您需要的键数（这边建议是2~8哦）
                     </h3>
                     <div class="input-group mb-3">
-                        <input type="text" id="keyboard" class="form-control" maxlength=4>
+                        <input type="text" id="k" class="form-control" maxlength=10>
+                    </div>
+                    <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
+                        请在此处输入与您需要的键数数量相等的英文字母 <br />
+                        以绑定键盘上对应的按键哦（不区分大小写,手机端玩家请忽略按键设置）！<br />
+                        4K下电脑默认为DFJK哦！其他键数请自行设置！<br />
+                    </h3>
+                    <div class="input-group mb-3">
+                        <input type="text" id="keyboard" class="form-control" maxlength=99999>
                     </div>
                     <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
                         请在此处输入您想要设置的时间限制哦~ （单位：秒） <br />
@@ -98,6 +104,16 @@
                     <div class="input-group mb-3">
                         <input type="text" id="note" class="form-control" maxlength=99999>
                     </div>
+                    <button type="button" class="btn btn-secondary btn-lg"
+                        onclick="show_btn(1);save_cookie();">完成</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="nxtpage(1);">下一页</button>
+                </div>
+                <div id="setting2" style="display: none;">
+                    <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
+                        关闭音效
+                    </h3>
+                    <input type="checkbox" id="close" class="form-control">
+                    <br>
                     <h3 style="font-size:1.2em; color:#fff; line-height:1.3em;">
                         隐藏结算后显示的评语
                     </h3>
@@ -109,8 +125,10 @@
                     <input id="upload-input" type="file" accept="image/gif, image/jpg, image/png, image/webp"
                         onchange="showImg(this)" />
                     <br>
+                    <br>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="lstpage(2);">上一页</button>
                     <button type="button" class="btn btn-secondary btn-lg"
-                        onclick="show_btn();save_cookie();">完成</button>
+                        onclick="show_btn(2);save_cookie();">完成</button>
                 </div>
             </div>
         </div>
