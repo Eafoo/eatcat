@@ -544,6 +544,7 @@ function initSetting() {
             _close = true;
         }
     }
+    gameRestart();
 }
 
 function show_btn(i) {
