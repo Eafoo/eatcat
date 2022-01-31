@@ -13,6 +13,7 @@ let hide = false;
 let __Time = 20;
 let __k = 4;
 let _close = false;
+let _fsj = false;
 var url = 'https://eafoo.github.io/eatcat/static/image/ClickBefore.png';
 
 function isplaying() {
@@ -349,11 +350,11 @@ function gameTapEvent(e) {
         x = (e.clientX || e.targetTouches[0].clientX) - body.offsetLeft,
         p = _gameBBList[_gameBBListIndex];
 
-    if (y > touchArea[0] || y < touchArea[1]) {
+    if (!_fsj && (y > touchArea[0] || y < touchArea[1])) {
         return false;
     }
-    if ((p.id == tar.id && tar.notEmpty) || (p.cell == 0 && x < blockSize) || (p.cell == 1 && x > blockSize && x < 2 *
-        blockSize) || (p.cell == 2 && x > 2 * blockSize && x < 3 * blockSize) || (p.cell == 3 && x > 3 * blockSize)) {
+    if (((p.id == tar.id || (_fsj && p.id % __k == tar.id % __k)) && tar.notEmpty) || (p.cell == 0 && x < blockSize) || (x > p.cell * blockSize && x < (p.cell + 1) *
+        blockSize) || (p.cell == (__k - 1) && x > (__k - 1) * blockSize)) {
         if (!_gameStart) {
             gameStart();
         }
@@ -415,6 +416,7 @@ function showGameScoreLayer() {
     score_text += '<br>您平均每秒点击了 ';
     score_text += "<span style='color:red;'>" + (_gameScore * 1000 / deviation_time).toFixed(2);
     score_text += "</span>" + ' 次哦！';
+    score_text += "<br>相当于 <span style='color:red;'>" + (_gameScore * 15000 / deviation_time).toFixed(2) + "</span> BPM 下的十六分音符哦！"
     document.getElementById('GameScoreLayer-score').innerHTML = score_text;
     let bast = cookie('bast-score');
     if (!bast || _gameScore > bast) {
@@ -487,9 +489,59 @@ function cookie(name, value, time) {
 document.write(createGameLayer());
 
 function initSetting() {
+    if (cookie('k')) {
+        let tsmp = parseInt(cookie('k'));
+        if (tsmp != __k) {
+            __k = tsmp;
+            var el = document.getElementById('GameLayerBG');
+            let fa = el.parentNode;
+            fa.removeChild(el);
+            fa.removeChild(GameTimeLayer);
+            fa.appendChild(parseElement(createGameLayer()));
+            fa.appendChild(parseElement("<div id = \"GameTimeLayer\"></div>"));
+            GameTimeLayer = document.getElementById("GameTimeLayer");
+            GameLayer = [];
+            GameLayer.push(document.getElementById('GameLayer1'));
+            GameLayer[0].children = GameLayer[0].querySelectorAll('div');
+            GameLayer.push(document.getElementById('GameLayer2'));
+            GameLayer[1].children = GameLayer[1].querySelectorAll('div');
+            GameLayerBG = document.getElementById('GameLayerBG');
+            if (GameLayerBG.ontouchstart === null) {
+                GameLayerBG.ontouchstart = gameTapEvent;
+            } else {
+                GameLayerBG.onmousedown = gameTapEvent;
+            }
+        }
+    }
+    if (cookie('time')) {
+        __Time = parseInt(cookie('time'));
+        GameTimeLayer.innerHTML = creatTimeText(__Time);
+    }
+    if (cookie('key')) {
+        var str = cookie('key');
+        map = {};
+        for (let i = 0; i < __k; ++i) {
+            map[str.charAt(i).toLowerCase()] = i + 1;
+        }
+    }
+    if (cookie('note')) {
+        var note = cookie('note');
+        key = note.split('');
+        gl();
+    }
     if (cookie("hide")) {
         if (cookie("hide").toString() == '1') {
-            hide = 1;
+            hide = true;
+        }
+    }
+    if (cookie("fsj")) {
+        if (cookie("fsj").toString() == '1') {
+            _fsj = true;
+        }
+    }
+    if (cookie("close")) {
+        if (cookie("close").toString() == '1') {
+            _close = true;
         }
     }
 }
@@ -526,6 +578,8 @@ function show_setting() {
     document.getElementById("timeinput").value = __Time.toString();
     document.getElementById("note").value = key.join('');
     document.getElementById("hide").checked = hide;
+    document.getElementById("close").checked = _close;
+    document.getElementById("fsj").checked = _fsj;
     document.getElementById("btn_group").style.display = "none";
     document.getElementById("btn_group2").style.display = "none";
     document.getElementById("tt").style.display = "none";
@@ -543,6 +597,8 @@ function save_cookie() {
     let note = document.getElementById("note").value;
     hide = document.getElementById("hide").checked;
     _close = document.getElementById("close").checked;
+    _fsj = document.getElementById("fsj").checked
+
     let tsmp = parseInt(document.getElementById("k").value);
     if (tsmp != __k) {
         __k = tsmp;
@@ -565,19 +621,38 @@ function save_cookie() {
             GameLayerBG.onmousedown = gameTapEvent;
         }
     }
+
     map = {};
     for (let i = 0; i < __k; ++i) {
         map[str.charAt(i).toLowerCase()] = i + 1;
     }
+
     __Time = parseInt(Time);
     GameTimeLayer.innerHTML = creatTimeText(__Time);
+
     key = note.split('');
     gl();
+    cookie('k', __k.toString(), 100);
+    cookie('note', key.join(''), 100);
+    cookie('time', Time, 100);
+    cookie('key', str, 100);
+    if (_close) {
+        cookie("close", "1", 100);
+    }
+    else {
+        cookie('close', '0', 100);
+    }
     if (hide) {
         cookie('hide', '1', 100);
     }
     else {
         cookie('hide', '0', 100);
+    }
+    if (_fsj) {
+        cookie('fsj', '1', 100);
+    }
+    else {
+        cookie('fsj', '0', 100);
     }
     gameRestart();
 }
@@ -655,4 +730,16 @@ function autoset(asss) {
 function showImg(input) {
     var file = input.files[0];
     url = window.URL.createObjectURL(file);
+}
+
+function stair() {
+    key = [];
+    for (var i = 1; i < __k; ++i) {
+        key.push(i.toString());
+    }
+    for (var i = __k; i > 1; --i) {
+        key.push(i.toString());
+    }
+    len = (__k - 1) * 2;
+    gameRestart();
 }
